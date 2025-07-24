@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 
-// Define a type for timeline events
 export type TimelineEvent = {
   id: number;
   type: string;
@@ -13,7 +12,6 @@ export type TimelineEvent = {
   top?: number;
 };
 
-// Event type to icon and color mapping
 const eventTypeMap: Record<string, { icon: string; color: string; border: string; bg: string }> = {
   'Unauthorized Access': {
     icon: '/door-open.png',
@@ -47,7 +45,6 @@ const eventTypeMap: Record<string, { icon: string; color: string; border: string
   },
 };
 
-// More detailed, realistic data structure
 const timelineData = [
   {
     cameraName: 'Camera - 01',
@@ -75,7 +72,6 @@ const timelineData = [
   },
 ];
 
-// Improved Event Block
 const EventBlock = ({ event }: { event: TimelineEvent }) => {
   const typeInfo = eventTypeMap[event.type] || eventTypeMap['4 Multiple Events'];
   return (
@@ -106,7 +102,6 @@ function formatTime(seconds: number) {
 const TIMELINE_START = 0;
 const TIMELINE_END = 16 * 60 * 60; // 16:00 in seconds
 
-// Helper: Use Next.js Image for icons
 function EventIcon({ src, alt, color }: { src: string; alt: string; color: string }) {
   if (!src || src === '/broken.png') {
     return (
@@ -116,9 +111,7 @@ function EventIcon({ src, alt, color }: { src: string; alt: string; color: strin
   return <Image src={src} alt={alt} width={16} height={16} className={`w-4 h-4 mr-2 ${color}`} />;
 }
 
-// Improved stacking: assign vertical slots to overlapping events
 function getStackedEvents(events: TimelineEvent[]): TimelineEvent[] {
-  // Sort by start time
   const sorted = [...events].sort((a, b) => a.start - b.start);
   const slots: { end: number }[] = [];
   return sorted.map(event => {
@@ -133,11 +126,9 @@ export default function TimelineWidget({ selectedCameraIndex, currentTime, setCu
   const timelineRef = useRef<HTMLDivElement>(null);
   const timelineWidth = 1212; // px, matches Figma
 
-  // Calculate scrubber position as a percentage
   const percent = (currentTime - TIMELINE_START) / (TIMELINE_END - TIMELINE_START);
   const scrubberLeft = percent * timelineWidth;
 
-  // Drag logic
   function onDrag(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!timelineRef.current) return;
     const rect = timelineRef.current.getBoundingClientRect();
@@ -169,15 +160,12 @@ export default function TimelineWidget({ selectedCameraIndex, currentTime, setCu
 
   return (
     <div className="w-full max-w-[1392px] bg-[#131313] rounded-lg shadow-lg flex flex-col p-4">
-      {/* Timeline Header */}
       <div className="flex items-center w-full mb-2">
         <div className="w-[180px] flex-shrink-0 text-sm font-Plus Jakarta Sans text-white">Camera List</div>
         <div className="flex-1 relative h-6" ref={timelineRef} style={{ width: timelineWidth }}>
-            {/* Time Ticks */}
             <div className="w-full flex justify-between text-xs text-gray-500 px-1 select-none">
                 {Array.from({ length: 17 }).map((_, i) => <div key={i} className="flex flex-col items-center"><span className="mb-1">{String(i).padStart(2, '0')}:00</span><div className="w-px h-2 bg-gray-600"></div></div>)}
-            </div>
-            {/* Scrubber (Draggable) */}
+            </div>  
             <div
               className="absolute z-30 top-0 bottom-0 w-0.5 bg-yellow-400 cursor-ew-resize"
               style={{ left: scrubberLeft,
@@ -192,9 +180,7 @@ export default function TimelineWidget({ selectedCameraIndex, currentTime, setCu
             </div>
         </div>
       </div>
-      {/* Timeline Body */}
       <div className="flex w-full">
-        {/* Left Sidepanel: Camera Names */}
         <div className="w-[180px] flex-shrink-0 flex flex-col gap-4">
           {timelineData.map((camera, idx) => (
             <div key={camera.cameraName} className={`flex items-center gap-2 h-16 text-sm text-gray-300 ${selectedCameraIndex === idx ? 'bg-[#23262F] rounded-md' : ''}`}>
@@ -203,9 +189,7 @@ export default function TimelineWidget({ selectedCameraIndex, currentTime, setCu
             </div>
           ))}
         </div>
-        {/* Right Side: Event Tracks */}
         <div className="flex-1 relative border-t border-gray-700" style={{ width: timelineWidth }}>
-            {/* Camera Tracks */}
             <div className="flex flex-col gap-4">
                 {timelineData.map((camera, idx) => {
                   const stackedEvents = getStackedEvents(camera.events);

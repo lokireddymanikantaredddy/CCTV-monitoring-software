@@ -13,12 +13,10 @@ export default function Navbar() {
 
   return (
     <nav className="w-full h-[72px] flex items-center justify-between px-12 bg-transparent relative z-20">
-      {/* Logo */}
       <div className="flex items-center gap-3">
         <img src="/logo.png" alt="MANDLACX Logo" className="h-10 w-10" />
         <span className="text-2xl font-extrabold text-white tracking-wide">MANDLACX</span>
       </div>
-      {/* Navigation */}
       <div className="flex items-center gap-10">
         {navItems.map((item) => (
           <NavItem
@@ -29,8 +27,7 @@ export default function Navbar() {
             onClick={() => setActive(item.label)}
           />
         ))}
-      </div>
-      {/* User Profile */}
+      </div>  
       <div className="flex items-center gap-4">
         <img src="/avatar.png" alt="User" className="h-10 w-10 rounded-full border-2 border-[#353945]" />
         <div className="flex flex-col items-end">

@@ -37,7 +37,7 @@ const cameras = [
   },
 ];
 
-// A single Thumbnail component for better structure
+
 function Thumbnail({ thumb, onClick }: { thumb: { id: number; name: string; src: string; }, onClick: () => void }) {
     return (
         <div 
@@ -50,7 +50,7 @@ function Thumbnail({ thumb, onClick }: { thumb: { id: number; name: string; src:
               {thumb.name}
             </div>
             <div className="absolute top-1 right-2 text-white text-xs cursor-pointer">
-                &#x22EE; {/* Vertical ellipsis */}
+                  &#x22EE;
             </div>
         </div>
     );
@@ -70,24 +70,19 @@ export default function IncidentPlayer({ selectedCameraIndex, setSelectedCameraI
   return (
     <div className="bg-[#181A20] rounded-xl shadow-lg w-[796px] h-[449px] flex flex-col relative overflow-hidden">
       
-      {/* Main Video/Image Frame */}
       <img src={camera.main} alt={camera.name} className="object-cover w-full h-full" />
 
-      {/* --- Overlays --- */}
       
-      {/* Timestamp Overlay (Top Left) */}
       <div className="absolute top-4 left-4 bg-[#23262F]/80 text-white text-xs px-3 py-1.5 rounded-full font-semibold flex items-center gap-2">
           <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 4V8L10 10" stroke="#FFD600" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           {camera.timestamp}
       </div>
 
-      {/* Camera Name Overlay (Bottom Left) */}
       <div className="absolute bottom-16 left-4 bg-[#181A20]/90 text-white text-sm px-4 py-1.5 rounded-full font-semibold flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
           {camera.name}
       </div>
 
-      {/* Floating Thumbnails (Bottom Right) */}
       <div className="absolute bottom-16 right-4 flex gap-3">
         {camera.thumbnails.map((thumb) => (
             <Thumbnail 
