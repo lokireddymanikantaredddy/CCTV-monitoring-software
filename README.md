@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SecureSight Dashboard – Fullstack Developer Intern Technical Assessment (July '25)
 
-## Getting Started
+## Overview
+SecureSight is a fictional CCTV monitoring dashboard. This project is a technical assessment for a Fullstack Developer Intern role. The dashboard allows you to view up to 3 CCTV feeds, see detected incidents (e.g., unauthorized access, gun threats), and resolve them. It is built with Next.js 15 (App Router), Prisma, and SQLite.
 
-First, run the development server:
+## Features
+- **Navbar**: Modern, Figma-accurate navigation bar.
+- **Incident Player**: Large video/image frame with overlays and camera thumbnails.
+- **Incident List**: Scrollable, fixed-width list of incidents with colored icons, thumbnails, and optimistic resolve button.
+- **Interactive Timeline**: 24-hour SVG/Canvas timeline with draggable scrubber and colored event blocks (optional/extra credit).
+- **API**: RESTful endpoints for fetching and resolving incidents.
+- **Seed Script**: Populates the database with realistic cameras and incidents.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- **Frontend**: Next.js 15 (App Router), React, Tailwind CSS, React Icons
+- **Backend**: Next.js API routes, Prisma ORM
+- **Database**: SQLite (local file)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup Instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository**
+   ```sh
+   git clone <your-repo-url>
+   cd <project-folder>
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Install dependencies**
+   ```sh
+   npm install
+   ```
 
-## Learn More
+3. **Set up the database**
+   ```sh
+   npx prisma migrate dev --name init
+   npx prisma db seed
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run the development server**
+   ```sh
+   npm run dev
+   ```
+   The app will be available at [http://localhost:3000](http://localhost:3000)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
+- `GET /api/incidents?resolved=false` – Get unresolved incidents (newest first)
+- `PATCH /api/incidents/:id/resolve` – Flip resolved status and return updated row
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
+- `/src/app/components/` – All React components (Navbar, IncidentPlayer, IncidentList, TimelineWidget, ControlBar)
+- `/src/app/api/` – Next.js API routes
+- `/prisma/` – Prisma schema and seed script
+- `/public/` – Static assets (icons, thumbnails)
 
-## Deploy on Vercel
+## Customization
+- **Add/Change Cameras or Incidents**: Edit the seed script in `/prisma/seed.ts` and re-run the seed command.
+- **Change Timeline Events**: Update the event data in `TimelineWidget.tsx`.
+- **Icons**: Replace icons in `/public` or use different React Icons.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Optional/Extra Credit
+- **Interactive Timeline**: Already implemented (draggable scrubber, colored event blocks).
+- **3D Website in React Three Fibre**: Not implemented (optional).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- No authentication or real-time features are required for this assessment.
+- The UI is designed to closely match the provided Figma design.
+- The app is fully responsive and works in all modern browsers.
+
+## License
+This project is for technical assessment and educational purposes only.
