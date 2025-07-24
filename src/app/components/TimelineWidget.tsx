@@ -1,4 +1,17 @@
 import React, { useRef } from 'react';
+import Image from 'next/image';
+
+// Define a type for timeline events
+export type TimelineEvent = {
+  id: number;
+  type: string;
+  start: number;
+  duration: number;
+  icon?: string;
+  color?: string;
+  time?: string;
+  top?: number;
+};
 
 // Event type to icon and color mapping
 const eventTypeMap: Record<string, { icon: string; color: string; border: string; bg: string }> = {
@@ -63,7 +76,7 @@ const timelineData = [
 ];
 
 // Improved Event Block
-const EventBlock = ({ event }: { event: any }) => {
+const EventBlock = ({ event }: { event: TimelineEvent }) => {
   const typeInfo = eventTypeMap[event.type] || eventTypeMap['4 Multiple Events'];
   return (
     <div
@@ -93,19 +106,18 @@ function formatTime(seconds: number) {
 const TIMELINE_START = 0;
 const TIMELINE_END = 16 * 60 * 60; // 16:00 in seconds
 
-// Helper: Check for icon existence (fallback to SVG if missing)
+// Helper: Use Next.js Image for icons
 function EventIcon({ src, alt, color }: { src: string; alt: string; color: string }) {
-  // For now, always render an SVG fallback if the PNG is missing
   if (!src || src === '/broken.png') {
     return (
       <svg className={`w-4 h-4 mr-2 ${color}`} viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="8" fill="currentColor" /></svg>
     );
   }
-  return <img src={src} alt={alt} className={`w-4 h-4 mr-2 ${color}`} onError={e => (e.currentTarget.src = '/fallback.png')} />;
+  return <Image src={src} alt={alt} width={16} height={16} className={`w-4 h-4 mr-2 ${color}`} />;
 }
 
 // Improved stacking: assign vertical slots to overlapping events
-function getStackedEvents(events: any[]): any[] {
+function getStackedEvents(events: TimelineEvent[]): TimelineEvent[] {
   // Sort by start time
   const sorted = [...events].sort((a, b) => a.start - b.start);
   const slots: { end: number }[] = [];
